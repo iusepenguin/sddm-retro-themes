@@ -16,8 +16,8 @@ Rectangle {
     property int targetscreenwidth: 2560
     property int targetscreenheight: 1440
 
-    property int defaultscreenwidth: 2260
-    property int defaultscreenheight: 1240
+    property int defaultscreenwidth: 2560
+    property int defaultscreenheight: 1440
 
     property int defaultspritewidth: setdefaultspriteWidth()
     property int defaultspriteheight: setdefaultspriteHeight()
@@ -25,7 +25,8 @@ Rectangle {
     property int defaultcharwidth: 8 * defaultscale
     property int defaultcharheight: 8 * defaultscale
 
-    property int cbmheadertexttoppadding: 300
+    // ZMIANA: Przywrócenie odwołania do dynamicznej funkcji zamiast sztywnych 300px
+    property int cbmheadertexttoppadding: setcbmheadertoppadding()
 
     property string c64black: "#000000"
     property string c64blue: "#104ea5"
@@ -160,41 +161,30 @@ Rectangle {
     property string comboboximage: "MasterAssets/Arrows//CBMArrow-Black.svg"
     property bool comboboxvisible: true
 
+    // =========================================================================
+    // ZMIANA: PRZYWRÓCONE, ZAAWANSOWANE SKALOWANIE EKRANU ZALEŻNE OD SCREEN
+    // =========================================================================
     function setdefaultScale() {
-        var setscale = 5
-        if (container.width > 1920) { setscale = 8 }
-        return setscale
+        if (Screen.width >= 2560 && Screen.height >= 1600) return 8;
+        if (Screen.width >= 2560 && Screen.height <= 1440) return 7;
+        return 5;
     }
 
     function setdefaultspriteScale() {
-        var setspritescale = 10
-        if (container.width > 1920) { setspritescale = 12 }
-        return setspritescale
+        if (Screen.width >= 2560 && Screen.height >= 1600) return 12;
+        if (Screen.width >= 2560 && Screen.height <= 1440) return 11;
+        return 10;
     }
 
-    function setdefaultspriteWidth() {
-        var setwidth = 24 * defaultspritescale
-        if (container.width > 1920) { setwidth = (24 * defaultspritescale) * 1.5 }
-        return setwidth
-    }
-
-    function setdefaultspriteHeight() {
-        var setheight = 21 * defaultspritescale
-        if (container.width > 1920) { setheight = (21 * defaultspritescale) * 1.5 }
-        return setheight
-    }
-
-    function setcbmheadertoppadding() {
-        var cbmheader = 2
-        if (container.width > 1920) { cbmheader = 6 }
-        return cbmheader
-    }
+    function setdefaultspriteWidth() { return Screen.width >= 2560 ? (24 * defaultspritescale) * 1.5 : 24 * defaultspritescale; }
+    function setdefaultspriteHeight() { return Screen.width >= 2560 ? (21 * defaultspritescale) *  1.5 : 21 * defaultspritescale; }
+    function setcbmheadertoppadding() { return Screen.width >= 2560 ? 5 : 2; }
 
     TextConstants { id: textConstants }
 
     FontLoader {
         id: loginfont
-        source: fontstyle
+        source: Qt.resolvedUrl(fontstyle)
     }
 
     Connections {
@@ -214,17 +204,16 @@ Rectangle {
     color: "#000000"
     anchors.fill: parent
 
-    // Zabezpieczenie przed zamknięciem menu przy zmianie okna
     onWidthChanged: { if (typeof sessionMenu !== "undefined") sessionMenu.isExpanded = false }
     onHeightChanged: { if (typeof sessionMenu !== "undefined") sessionMenu.isExpanded = false }
 
     Background {
         anchors.fill: parent
-        source: borderimage
+        source: Qt.resolvedUrl(borderimage)
         fillMode: Image.Stretch
         onStatusChanged: {
-            if (status == Image.Error && source != config.defaultBackground) {
-                source = config.defaultBackground
+            if (status == Image.Error && source != Qt.resolvedUrl(config.defaultBackground)) {
+                source = Qt.resolvedUrl(config.defaultBackground)
             }
         }
     }
@@ -232,12 +221,11 @@ Rectangle {
     Image {
         id: backgroundImage
         anchors.centerIn: container
-        source: backgroundimg
+        source: Qt.resolvedUrl(backgroundimg)
         width: bgwidth
         height: bgheight
     }
 
-    // GŁÓWNY ŁAPACZ MYSZY DO ZAMYKANIA MENU
     MouseArea {
         anchors.fill: parent
         onClicked: {
@@ -251,11 +239,12 @@ Rectangle {
     Column {
         id: entryColumn64
         anchors.left: parent.left
-        topPadding: headertexttoppadding
+        topPadding: 60
+        leftPadding: 100
         Image {
             anchors.centerIn: top
             id: header
-            source: headertext
+            source: Qt.resolvedUrl(headertext)
             width: headertextimagewidth
             height: headertextimageheight
             visible: headervisible
@@ -264,9 +253,10 @@ Rectangle {
 
     Image {
         id: promptbox
+        scale: 0.9
         anchors.centerIn: parent
         anchors.horizontalCenterOffset: -20
-        anchors.verticalCenterOffset: -50
+        anchors.verticalCenterOffset: 10
         source: Qt.resolvedUrl(dialogboximage)
         width: dialogboximagewidth
         height: dialogboximageheight
@@ -283,7 +273,7 @@ Rectangle {
             font.pointSize: dialogboxtextsize
         }
 
-        // ZMIANA: AnimatedImage, aby ożywić globus!
+        // ZMIANA: AnimatedImage wymuszające odtwarzanie animacji globusa!
         AnimatedImage {
             id: avatar
             source: Qt.resolvedUrl(cbmavatar)
@@ -370,7 +360,7 @@ Rectangle {
                 source: Qt.resolvedUrl(usernametextboximage)
             }
 
-            // ZMIANA: Z powrotem TextInput zamiast TextField!
+            // ZMIANA: Czysty TextInput zamiast TextField dla poprawnych kolorów
             TextInput {
                 id: name
                 anchors.fill: parent
@@ -416,7 +406,7 @@ Rectangle {
                 source: Qt.resolvedUrl(passwordtextboximage)
             }
 
-            // ZMIANA: Z powrotem TextInput zamiast TextField!
+            // ZMIANA: Czysty TextInput zamiast TextField dla poprawnych kolorów
             TextInput {
                 id: password
                 anchors.fill: parent
@@ -574,7 +564,6 @@ Rectangle {
                     text: model.name
                     font.family: loginfont.name
                     font.pointSize: 30
-                    // Podczas najechania myszką tekst staje się zielony na czarnym tle
                     color: hoverArea.containsMouse ? petgreen : c64black
                 }
 
