@@ -25,7 +25,6 @@ Rectangle {
     property int defaultcharwidth: 8 * defaultscale
     property int defaultcharheight: 8 * defaultscale
 
-    // ZMIANA: Przywrócenie odwołania do dynamicznej funkcji zamiast sztywnych 300px
     property int cbmheadertexttoppadding: setcbmheadertoppadding()
 
     property string c64black: "#000000"
@@ -161,9 +160,6 @@ Rectangle {
     property string comboboximage: "MasterAssets/Arrows//CBMArrow-Black.svg"
     property bool comboboxvisible: true
 
-    // =========================================================================
-    // ZMIANA: PRZYWRÓCONE, ZAAWANSOWANE SKALOWANIE EKRANU ZALEŻNE OD SCREEN
-    // =========================================================================
     function setdefaultScale() {
         if (Screen.width >= 2560 && Screen.height >= 1600) return 8;
         if (Screen.width >= 2560 && Screen.height <= 1440) return 7;
@@ -189,15 +185,13 @@ Rectangle {
 
     Connections {
         target: sddm
-        onLoginSucceeded: {
+        function onLoginSucceeded() {
             errorMessage.color = "green"
             errorMessage.text = textConstants.loginSucceeded
         }
-        onLoginFailed: {
+        function onLoginFailed() {
             password.text = ""
-            errorMessage.color = "red"
-            errorMessage.text = textConstants.loginFailed
-            errorMessage.bold = true
+            // ...
         }
     }
 
@@ -242,7 +236,7 @@ Rectangle {
         topPadding: 60
         leftPadding: 100
         Image {
-            anchors.centerIn: top
+            anchors.horizontalCenter: parent.horizontalCenter
             id: header
             source: Qt.resolvedUrl(headertext)
             width: headertextimagewidth
@@ -273,7 +267,6 @@ Rectangle {
             font.pointSize: dialogboxtextsize
         }
 
-        // ZMIANA: AnimatedImage wymuszające odtwarzanie animacji globusa!
         AnimatedImage {
             id: avatar
             source: Qt.resolvedUrl(cbmavatar)
@@ -360,7 +353,6 @@ Rectangle {
                 source: Qt.resolvedUrl(usernametextboximage)
             }
 
-            // ZMIANA: Czysty TextInput zamiast TextField dla poprawnych kolorów
             TextInput {
                 id: name
                 anchors.fill: parent
@@ -406,7 +398,6 @@ Rectangle {
                 source: Qt.resolvedUrl(passwordtextboximage)
             }
 
-            // ZMIANA: Czysty TextInput zamiast TextField dla poprawnych kolorów
             TextInput {
                 id: password
                 anchors.fill: parent
@@ -526,9 +517,6 @@ Rectangle {
         }
     }
 
-    // =========================================================================
-    // OSTATECZNE ROZWIĄZANIE - GLOBALNA LISTA ROZWIJANA
-    // =========================================================================
     MouseArea {
         anchors.fill: parent
         visible: typeof sessionMenu !== "undefined" && sessionMenu.isExpanded

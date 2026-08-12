@@ -185,7 +185,7 @@ Rectangle {
         anchors.horizontalCenter : parent.horizontalCenter
         topPadding : headertexttoppadding
         Image {
-            anchors.centerIn : top
+            anchors.horizontalCenter: parent.horizontalCenter
             id : header
             source : Qt.resolvedUrl(headertext)
             width :  headertextimagewidth

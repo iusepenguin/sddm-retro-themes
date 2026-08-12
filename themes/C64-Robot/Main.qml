@@ -26,7 +26,6 @@ Rectangle {
 
     property int cbmheadertexttoppadding : setcbmheadertoppadding()
 
-    // C64 COLOR VALUES
     property string c64black : "#000000"
     property string c64blue : "#104ea5"
     property string c64brown : "#8d4300"
@@ -44,7 +43,6 @@ Rectangle {
     property string c64white : "#ffffff"
     property string c64yellow : "#fff793"
 
-    // ASSETS & DIMENSIONS
     property string borderimage : "MasterAssets/Borders/CBMBorder-LightBlue.png"
     property string backgroundimg : "MasterAssets/Backgrounds/Misc/CBMBackground-ImpossibleMission.png"
     property int bgwidth : defaultscreenwidth
@@ -54,14 +52,12 @@ Rectangle {
     property int fsize : defaultcharwidth * 0.75
     property int fheight : defaultcharheight * 0.75
 
-    // HEADER
     property string headertext : "MasterAssets/HeaderText/CBMHeader-LightBlue.svg"
     property int headertexttoppadding : setcbmheadertoppadding()
     property int headertextimagewidth : 302 * defaultscale
     property int headertextimageheight : 23 * defaultscale
     property bool headervisible : false
 
-    // DIALOG BOX
     property int dialogboxtoppadding : -(fsize * .5)
     property string dialogboxtext : "SYSTEM LOGIN"
     property bool dialogboxtextvisible : true
@@ -71,15 +67,12 @@ Rectangle {
     property int dialogboximagewidth : 266 * defaultscale
     property int dialogboximageheight : 82 * defaultscale
 
-    // AVATAR
-    // UWAGA: Aby animacja działała, plik musi być w formacie .gif, a nie .svg!
     property int avatarleftpadding : fsize * 4
     property int avatartoppadding : fsize * 2.0
     property string cbmavatar : "MasterAssets/Avatars/Misc/CBMAvatar-Robot1.svg"
     property int avatarwidth : defaultspritewidth
     property int avatarheight : defaultspriteheight
 
-    // RESTART BUTTON
     property int restartbuttonleftpadding : fsize * 3
     property int restartbuttontoppadding : fsize * 11
     property int restartbuttonimagewidth : fsize * 11
@@ -90,7 +83,6 @@ Rectangle {
     property string restartbuttontext : "RESTART"
     property string restartbuttoncolor : c64white
 
-    // SHUTDOWN BUTTON
     property int shutdownleftpadding : fsize * 29.5
     property int shutdowntoppadding : fsize * 11
     property int shutdownimagewidth : fsize * 12.5
@@ -101,7 +93,6 @@ Rectangle {
     property string shutdownbuttontext : "SHUTDOWN"
     property string shutdownbuttoncolor : c64white
 
-    // LOGIN BUTTON
     property int loginbuttonleftpadding : fsize * 33
     property int loginbuttontoppadding : fsize * 8.5
     property int loginbuttonimagewidth : fsize * 9
@@ -112,7 +103,6 @@ Rectangle {
     property string loginbuttontext : "LOGIN"
     property string loginbuttoncolor : c64yellow
 
-    // USERNAME TEXT
     property int usernameleftpadding : fsize * 17
     property int usernametoppadding : fsize * 3
     property int usernamewidth : fsize * 13
@@ -121,7 +111,6 @@ Rectangle {
     property string usernamecolor : c64blue
     property int usernamefontsize : fsize
 
-    // USERNAME TEXTBOX
     property int usernametextboxleftpadding : fsize * 29
     property int usernametextboxtoppadding : fsize * 2.7
     property int usernametextboxwidth : fsize * 13
@@ -130,7 +119,6 @@ Rectangle {
     property string usernametextboxcolor : c64lightgreen
     property int usernametextboxfontsize : fsize - 2
 
-    // PASSWORD TEXT
     property int passwordleftpadding : fsize * 17
     property int passwordtoppadding : fsize * 6
     property int passwordwidth : fsize * 13
@@ -139,7 +127,6 @@ Rectangle {
     property string passwordcolor : c64lightblue
     property int passwordfontsize : fsize
 
-    // PASSWORD TEXTBOX
     property int passwordtextboxleftpadding : fsize * 29
     property int passwordtextboxtoppadding : fsize * 5.7
     property int passwordtextboxwidth : fsize * 13
@@ -148,7 +135,6 @@ Rectangle {
     property string passwordtextboxcolor : c64lightgreen
     property int passwordtextboxfontsize : fsize - 2
 
-    // COMBOBOX
     property int comboboxleftpadding : fsize * 17
     property int comboboxtoppadding : fsize * 8.5
     property string comboboxcolor : c64blue
@@ -195,7 +181,6 @@ Rectangle {
         source : Qt.resolvedUrl(fontstyle)
     }
 
-    // ODKOMENTOWANE I POPRAWIONE DLA NOWYCH WERSJI QT
     Connections {
         target : sddm
         function onLoginSucceeded() { }
@@ -205,7 +190,6 @@ Rectangle {
     color : "#5796ec"
     anchors.fill : parent
 
-    // Zabezpieczenie menu przed zawieszeniem
     onWidthChanged: { if (typeof sessionMenu !== "undefined") sessionMenu.isExpanded = false }
     onHeightChanged: { if (typeof sessionMenu !== "undefined") sessionMenu.isExpanded = false }
 
@@ -225,7 +209,6 @@ Rectangle {
         }
     }
 
-    // ZMIANA: Tło ustawione jako AnimatedImage
     AnimatedImage {
         id : backgroundImage
         anchors.centerIn : container
@@ -240,7 +223,7 @@ Rectangle {
         anchors.horizontalCenter : parent.horizontalCenter
         topPadding : headertexttoppadding
         Image {
-            anchors.centerIn : top
+            anchors.horizontalCenter: parent.horizontalCenter
             id : header
             source : Qt.resolvedUrl(headertext)
             width :  headertextimagewidth
@@ -270,7 +253,6 @@ Rectangle {
             font.pointSize : dialogboxtextsize
         }
 
-        // ZMIANA: Przywrócony i ożywiony awatar
         AnimatedImage {
             id : avatar
             source : Qt.resolvedUrl(cbmavatar)
@@ -515,9 +497,6 @@ Rectangle {
         }
     }
 
-    // =========================================================================
-    // GLOBALNA LISTA ROZWIJANA
-    // =========================================================================
     MouseArea {
         anchors.fill: parent
         visible: typeof sessionMenu !== "undefined" && sessionMenu.isExpanded
@@ -553,7 +532,6 @@ Rectangle {
                     text: model.name
                     font.family: loginfont.name
                     font.pointSize: 27
-                    // ZMIANA: Lepszy kontrast tekstu po najechaniu myszką
                     color: hoverArea.containsMouse ? c64white : comboboxtextcolor
                 }
 

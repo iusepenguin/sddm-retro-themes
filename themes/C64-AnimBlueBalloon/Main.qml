@@ -187,7 +187,7 @@ Rectangle {
 
     Background {
         anchors.fill: parent
-        source: borderimage
+        source: Qt.resolvedUrl(borderimage)
         fillMode: Image.Stretch
     }
 
@@ -212,7 +212,7 @@ Rectangle {
         anchors.horizontalCenter : parent.horizontalCenter
         topPadding : headertexttoppadding
         Image {
-            anchors.centerIn : top
+            anchors.horizontalCenter: parent.horizontalCenter
             id : header
             source : headertext
             width :  headertextimagewidth
