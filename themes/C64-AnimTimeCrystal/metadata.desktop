@@ -1,5 +1,5 @@
 [SddmGreeterTheme]
-Name=C64-Robots
+Name=C64-AnimTimeCrystal
 Description=C64 Theme
 Author=Pentad
 Copyright=
@@ -12,6 +12,6 @@ MainScript=Main.qml
 ConfigFile=theme.conf
 TranslationsDirectory=translations
 Email=markhart@outlook.com
-Theme-Id=C64-Robots
+Theme-Id=C64-AnimTimeCrystal
 Theme-API=2.0
 QtVersion=6
