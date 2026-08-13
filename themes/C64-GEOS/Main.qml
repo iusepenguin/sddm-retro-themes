@@ -447,7 +447,7 @@ Rectangle {
 
             Rectangle {
                 width: parent.width
-                height: Math.min(sessionList.contentHeight, fsize * 10)
+                height: Math.min(sessionList.count, 8) * comboboxheight
                 anchors.top: parent.bottom
                 anchors.topMargin: -1
                 color: comboboxmenucolor
@@ -461,7 +461,8 @@ Rectangle {
                     id: sessionList
                     anchors.fill: parent
                     model: sessionModel
-                    interactive: contentHeight > height
+                    interactive: true
+                    boundsBehavior: Flickable.StopAtBounds
 
                     delegate: Rectangle {
                         width: sessionList.width

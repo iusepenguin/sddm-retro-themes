@@ -559,13 +559,14 @@ Rectangle {
         border.color: comboboxbordercolor
         border.width: 1 * (defaultscale / 5)
         clip: true
-        height: sessionList.count * comboboxheight
+        height: Math.min(sessionList.count, 6) * comboboxheight
 
         ListView {
             id: sessionList
             anchors.fill: parent
             model: sessionModel
-            interactive: false
+            interactive: true
+            boundsBehavior: Flickable.StopAtBounds
 
             delegate: Rectangle {
                 width: sessionList.width
