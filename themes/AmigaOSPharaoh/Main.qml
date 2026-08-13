@@ -254,6 +254,7 @@ Rectangle {
         source : Qt.resolvedUrl(dialogboximage)
         width : dialogboximagewidth
         height : dialogboximageheight
+        scale: 0.85
         visible : true
 
         Image {
@@ -266,13 +267,13 @@ Rectangle {
 
             Text {
                 x : dialogboxleftpadding
-                y : dialogboxtoppadding
+                y : 15 //dialogboxtoppadding
                 color : dialogboxtextcolor
                 text : dialogboxtext
                 visible : dialogboxtextvisible
                 font.family : loginfont.name
                 font.italic : false
-                font.pointSize : 32
+                font.pointSize : 34
             }
         }
 
@@ -480,11 +481,12 @@ Rectangle {
 
         Item {
             id: sessionMenu
-            x: comboboxleftpadding
+            x: 1076 //comboboxleftpadding
             y: comboboxtoppadding
-            width: comboboxwidth
+            width: 475 //comboboxwidth
             height: comboboxheight
             z: 100
+            scale: 0.85
             visible: comboboxvisible
 
             property bool isExpanded: false
@@ -602,4 +604,25 @@ Rectangle {
             }
         }
     }
+
+    MouseArea {
+        id: cursorTracker
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.NoButton
+        cursorShape: Qt.BlankCursor
+        z: 9999998
+    }
+
+    Image {
+        id: customCursor
+        source: Qt.resolvedUrl("Pointer.svg")
+        width: 76 * (defaultscale / 5)
+        height: 76 * (defaultscale / 5)
+        x: cursorTracker.mouseX
+        y: cursorTracker.mouseY
+        z: 9999999
+        // smooth: false
+    }
+
 }

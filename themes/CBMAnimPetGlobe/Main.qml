@@ -568,4 +568,25 @@ Rectangle {
             }
         }
     }
+
+    MouseArea {
+        id: cursorTracker
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.NoButton
+        cursorShape: Qt.BlankCursor
+        z: 9999998
+    }
+
+    Image {
+        id: customCursor
+        source: Qt.resolvedUrl("Pointer.png")
+        width: 32 * (defaultscale / 5)
+        height: 32 * (defaultscale / 5)
+        x: cursorTracker.mouseX
+        y: cursorTracker.mouseY
+        z: 9999999
+        // smooth: false
+    }
+
 }
