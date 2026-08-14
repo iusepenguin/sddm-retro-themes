@@ -585,11 +585,18 @@ Rectangle {
         border.color: comboboxbordercolor
         border.width: 1
         clip: true
+        height: Math.min(sessionList.count, 6) * (comboboxheight * promptbox.scale)
 
+        ListView {
+            id: sessionList
+            anchors.fill: parent
+            model: sessionModel
+            interactive: true
+            boundsBehavior: Flickable.StopAtBounds
 
             delegate: Rectangle {
                 width: sessionList.width
-                height: comboboxheight
+                height: comboboxheight * promptbox.scale
                 color: hoverArea.containsMouse ? comboboxhovercolor : "transparent"
 
                 Text {
@@ -629,8 +636,8 @@ Rectangle {
     Image {
         id: customCursor
         source: Qt.resolvedUrl("Pointer.png")
-        width: 32 * (defaultscale / 5)
-        height: 38 * (defaultscale / 5)
+        width: 32
+        height: 38
         x: cursorTracker.mouseX
         y: cursorTracker.mouseY
         z: 9999999
